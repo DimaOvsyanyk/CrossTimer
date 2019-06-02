@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.dimaoprog.crosstimer.Converter" />
+
+        <import type="android.view.View" />
+
+        <variable
+
+            name="timerModel"
+            type="com.dimaoprog.crosstimer.TimerViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_dark"
+        android:orientation="vertical"
+        android:padding="8dp"
+        tools:context=".Timer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DisplayBig"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.2"
+                android:gravity="center_vertical|end"
+                android:maxLines="1"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@{Converter.intToString(timerModel.rounds)}"
+                android:textColor="@color/green_neon"
+                tools:text="@string/zero2" />
+
+            <TextView
+                style="@style/DisplayBig"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="@{Converter.longTimeToStringDetail(timerModel.tenMin)}"
+                tools:text="@string/zero" />
+
+            <TextView
+                style="@style/DisplayBig"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="@{Converter.longTimeToStringDetail(timerModel.min)}"
+                tools:text="@string/zero" />
+
+            <TextView
+                style="@style/DisplayBig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/twoPoints" />
+
+            <TextView
+                style="@style/DisplayBig"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="@{Converter.longTimeToStringDetail(timerModel.tenSec)}"
+                tools:text="@string/zero" />
+
+            <TextView
+                style="@style/DisplayBig"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="@{Converter.longTimeToStringDetail(timerModel.sec)}"
+                tools:text="@string/zero" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <ImageButton
+                android:id="@+id/btn_reset"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="100dp"
+                android:background="@color/black"
+                android:contentDescription="@string/reset"
+                android:padding="8dp"
+                app:srcCompat="@drawable/reload_icon" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="150dp"
+                android:layout_marginEnd="150dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/work"
+                    android:textColor="@color/green_neon"
+                    android:textSize="50sp"
+                    android:visibility="@{timerModel.workTicking ? View.VISIBLE : View.INVISIBLE}"
+                    tools:visibility="invisible" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/rest"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="50sp"
+                    android:visibility="@{timerModel.restTicking ? View.VISIBLE : View.INVISIBLE}" />
+
+            </FrameLayout>
+
+            <ImageButton
+                android:id="@+id/btn_start"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:enabled="@{!(timerModel.workTicking || timerModel.restTicking)}"
+                android:background="@color/black"
+                android:contentDescription="@string/go"
+                android:padding="5dp"
+                app:srcCompat="@drawable/play_icon" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

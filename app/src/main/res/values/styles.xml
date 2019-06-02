@@ -1,0 +1,46 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/grey_light</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="Display">
+        <item name="android:textColor">@color/red_neon</item>
+        <item name="android:fontFamily">@font/ds_digib</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:numberPickerStyle">@style/NumberPickerTheme</item>
+    </style>
+
+    <style name="NumberPickerTheme" parent="@android:style/Widget.Material.NumberPicker">
+        <item name="android:solidColor">@color/grey_dark</item>
+        <item name="android:colorControlNormal">@color/grey_dark</item>
+        <item name="android:textColor">@color/red_neon</item>
+        <item name="android:textColorPrimary">@color/red_neon</item>
+        <item name="android:textSize">100sp</item>
+    </style>
+
+    <style name="DisplaySmall" parent="Display">
+        <item name="android:textSize">50sp</item>
+    </style>
+
+    <style name="DisplayBig" parent="Display">
+        <item name="android:textSize">175sp</item>
+    </style>
+
+    <style name="TextViewDisplay">
+        <item name="android:textAppearance">@style/Display</item>
+    </style>
+
+    <style name="tglBtnWithText">
+        <item name="android:background">@drawable/btn_toggle_bg</item>
+        <item name="android:textColor">@drawable/text_color_tg_btn</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_margin">3dp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.dimaoprog.crosstimer.Converter" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="mainModel"
+            type="com.dimaoprog.crosstimer.MainViewModel" />
+
+    </data>
+
+    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_dark"
+        android:padding="8dp"
+        tools:context=".MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/rounds"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_weight="1"
+                    android:text="@string/minutes"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/seconds"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/picker_rounds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:enabled="@{mainModel.intMode}"
+                    android:solidColor="@color/grey_dark"
+                    app:np_dividerColor="@color/blue_neon"
+                    app:np_max="99"
+                    app:np_min="1"
+                    app:np_selectedTextColor="@color/green_neon"
+                    app:np_selectedTextSize="40sp"
+                    app:np_textSize="20sp" />
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/picker_ten_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:solidColor="@color/grey_dark"
+                    app:np_dividerColor="@color/blue_neon"
+                    app:np_max="9"
+                    app:np_min="0"
+                    app:np_selectedTextColor="@color/red_neon"
+                    app:np_selectedTextSize="40sp"
+                    app:np_textSize="20sp" />
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/picker_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:solidColor="@color/grey_dark"
+                    app:np_dividerColor="@color/blue_neon"
+                    app:np_max="9"
+                    app:np_min="0"
+                    app:np_selectedTextColor="@color/red_neon"
+                    app:np_selectedTextSize="40sp"
+                    app:np_textSize="20sp" />
+
+                <TextView
+                    style="@style/Display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/twoPoints"
+                    android:textSize="40sp" />
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/picker_ten_sec"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:solidColor="@color/grey_dark"
+                    app:np_dividerColor="@color/blue_neon"
+                    app:np_max="5"
+                    app:np_min="0"
+                    app:np_selectedTextColor="@color/red_neon"
+                    app:np_selectedTextSize="40sp"
+                    app:np_textSize="20sp" />
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/picker_sec"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:solidColor="@color/grey_dark"
+                    app:np_dividerColor="@color/blue_neon"
+                    app:np_max="9"
+                    app:np_min="0"
+                    app:np_selectedTextColor="@color/red_neon"
+                    app:np_selectedTextSize="40sp"
+                    app:np_textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/work"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_delete_work_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/navi_btn"
+                    android:contentDescription="@string/delete"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_delete_forever_white_24dp"
+                    android:visibility="@{mainModel.intMode || mainModel.swMode ? View.VISIBLE : View.INVISIBLE}" />
+
+                <ImageButton
+                    android:id="@+id/btn_add_work_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/navi_btn"
+                    android:contentDescription="@string/set"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_arrow_forward_white_24dp"
+                    android:visibility="@{mainModel.intMode || mainModel.swMode ? View.VISIBLE : View.INVISIBLE}" />
+
+                <TextView
+                    style="@style/DisplaySmall"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/navi_btn"
+                    android:padding="6dp"
+                    android:text="@{Converter.longTimeToString(mainModel.workTime)}"
+                    tools:text="@string/zero3" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="@{mainModel.swMode ? View.INVISIBLE : View.VISIBLE}">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/rest"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_delete_rest_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/navi_btn"
+                    android:contentDescription="@string/delete"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_delete_forever_white_24dp"
+                    android:visibility="@{mainModel.intMode ? View.VISIBLE : View.INVISIBLE}" />
+
+                <ImageButton
+                    android:id="@+id/btn_add_rest_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/navi_btn"
+                    android:contentDescription="@string/set"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_arrow_forward_white_24dp"
+                    android:visibility="@{mainModel.intMode ? View.VISIBLE : View.INVISIBLE}" />
+
+                <TextView
+                    style="@style/DisplaySmall"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/navi_btn"
+                    android:padding="6dp"
+                    android:text="@{Converter.longTimeToString(mainModel.restTime)}"
+                    tools:text="@string/zero3" />
+
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:shrinkColumns="*"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/btn_info_int"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.5"
+                        android:background="@drawable/navi_btn_ok"
+                        android:contentDescription="@string/info"
+                        android:onClick="showInfoDialog"
+                        app:srcCompat="@drawable/info_icon" />
+
+                    <ImageButton
+                        android:id="@+id/btn_info_sw"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.5"
+                        android:background="@drawable/navi_btn_ok"
+                        android:contentDescription="@string/info"
+                        android:onClick="showInfoDialog"
+                        app:srcCompat="@drawable/info_icon" />
+
+                    <ImageButton
+                        android:id="@+id/btn_info_fgb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.5"
+                        android:background="@drawable/navi_btn_ok"
+                        android:contentDescription="@string/info"
+                        android:onClick="showInfoDialog"
+                        app:srcCompat="@drawable/info_icon" />
+
+                    <ImageButton
+                        android:id="@+id/btn_info_tbt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.5"
+                        android:background="@drawable/navi_btn_ok"
+                        android:contentDescription="@string/info"
+                        android:onClick="showInfoDialog"
+                        app:srcCompat="@drawable/info_icon" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggle_int"
+                        style="@style/tglBtnWithText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{mainModel.intMode}"
+                        android:text="@string/ints"
+                        android:textOff="@string/ints"
+                        android:textOn="@string/ints" />
+
+                    <ToggleButton
+                        android:id="@+id/toggle_sw"
+                        style="@style/tglBtnWithText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{mainModel.swMode}"
+                        android:text="@string/sw"
+                        android:textOff="@string/sw"
+                        android:textOn="@string/sw" />
+
+                    <ToggleButton
+                        android:id="@+id/toggle_fgb"
+                        style="@style/tglBtnWithText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{mainModel.fgbMode}"
+                        android:text="@string/fgb"
+                        android:textOff="@string/fgb"
+                        android:textOn="@string/fgb" />
+
+                    <ToggleButton
+                        android:id="@+id/toggle_tbt"
+                        style="@style/tglBtnWithText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{mainModel.tbtMode}"
+                        android:text="@string/tbt"
+                        android:textOff="@string/tbt"
+                        android:textOn="@string/tbt" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ToggleButton
+                        android:id="@+id/toggle_up_down"
+                        style="@style/tglBtnWithText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/up_dn"
+                        android:textOff="@string/up_s"
+                        android:textOn="@string/down_s" />
+
+                    <ToggleButton
+                        android:id="@+id/toggle_ten_sec"
+                        style="@style/tglBtnWithText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_10s"
+                        android:textOff="@string/_10s"
+                        android:textOn="@string/_10s" />
+
+                    <ToggleButton
+                        android:id="@+id/toggle_sound"
+                        style="@style/tglBtnWithText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sound"
+                        android:textOff="@string/sound"
+                        android:textOn="@string/mute" />
+
+                    <ImageView
+                        android:id="@+id/btn_go"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/btn_toggle_bg"
+                        android:contentDescription="@string/go"
+                        android:onClick="onGoClick"
+                        android:padding="5dp"
+                        app:srcCompat="@drawable/play_icon" />
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

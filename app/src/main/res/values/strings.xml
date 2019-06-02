@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name" translatable="false">Cross Timer</string>
+    <string name="up">Up</string>
+    <string name="down">Down</string>
+    <string name="intervals">Intervals</string>
+    <string name="tabata" translatable="false">Tabata</string>
+    <string name="fightgonebad" translatable="false">Fight Gone Bad</string>
+    <string name="stopwatch">Stopwatch</string>
+    <string name="timer">Timer</string>
+    <string name="brightness">Brightness</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="up_s" translatable="false">UP</string>
+    <string name="down_s" translatable="false">dn</string>
+    <string name="work">WORK</string>
+    <string name="rest">REST</string>
+    <string name="finishText">Good job</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="zero">0</string>
+    <string name="zero2">00</string>
+    <string name="zero3">00:00</string>
+    <string name="twoPoints">:</string>
+    <string name="ints">int</string>
+    <string name="sw">sw</string>
+    <string name="tbt">TBT</string>
+    <string name="fgb">FGB</string>
+    <string name="up_dn">up/dn</string>
+    <string name="_10s">+10s</string>
+    <string name="sound">sound</string>
+    <string name="set">SET</string>
+    <string name="mute">mute</string>
+    <string name="right">RIGHT</string>
+    <string name="ok">OK</string>
+    <string name="left">LEFT</string>
+    <string name="info">i</string>
+
+    <string name="infoIntervals">Interval timer mode. First you choose how many intervals you need, then how many work and rest time you need.</string>
+    <string name="infoStopWatch">Simple timer, set how many time you need and GO.</string>
+    <string name="infoFGB">Classic crossfit workout mode, 3 rounds 5 exercises by 1 minute each, rest 1 minute between rounds. Total 17 minutes.</string>
+    <string name="infoTBT">Classic crossfit workout mode, 8 rounds 20 seconds work + 10 seconds rest. Total 4 minutes.</string>
+    <string name="something">something</string>
+    <string name="seconds">seconds</string>
+    <string name="minutes">minutes</string>
+    <string name="reset">reset</string>
+    <string name="go">go</string>
+    <string name="youCanGo">You don\'t have to set anything, you can start your workout.</string>
+    <string name="haveToChoose">You have to choose training mode!</string>
+    <string name="howManyInts">How many intervals you wish to do?</string>
+    <string name="rounds">rounds</string>
+    <string name="delete">delete</string>
+
+
+</resources>
