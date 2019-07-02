@@ -1,11 +1,20 @@
 package com.dimaoprog.crosstimer;
 
-import android.arch.lifecycle.ViewModel;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
-public class TimerViewModel extends ViewModel {
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
+public class TimerViewModel extends AndroidViewModel {
 
     private int baseRounds;
     private ObservableInt rounds = new ObservableInt();
@@ -26,6 +35,17 @@ public class TimerViewModel extends ViewModel {
     private ObservableBoolean workTicking = new ObservableBoolean();
     private ObservableBoolean restTicking = new ObservableBoolean();
 
+    private CompositeDisposable timerDisp = new CompositeDisposable();
+    private SoundPlayer player;
+
+    private boolean firstSecond;
+    private boolean firstRound;
+
+    public TimerViewModel(@NonNull Application application) {
+        super(application);
+        player = new SoundPlayer(application);
+    }
+
     public void setInput(int baseRounds, long workTime, long restTime, boolean intMode, boolean swMode, boolean fgbMode,
                          boolean tbtMode, boolean countDown, boolean needTenSec, boolean needSound) {
         this.baseRounds = baseRounds;
@@ -41,18 +61,134 @@ public class TimerViewModel extends ViewModel {
         this.needSound = needSound;
     }
 
-    public void setNewTime(long time) {
+    private void setNewTime(long time) {
         setTenMin((time / 60) / 10);
         setMin((time / 60) % 10);
         setTenSec((time % 60) / 10);
         setSec((time % 60) % 10);
     }
 
-    public void resetAction() {
+    private void resetAction() {
         rounds.set(baseRounds);
         workTicking.set(false);
         restTicking.set(false);
         setNewTime(0L);
+    }
+
+    private void playSound() {
+        if (needSound) {
+            player.playSound();
+        }
+    }
+
+    private void playSoundStartFinish() {
+        if (needSound) {
+            player.playSoundStartFinish();
+        }
+    }
+
+    public void resetTimer() {
+        timerDisp.clear();
+        resetAction();
+    }
+
+    public void startTimer() {
+        firstRound = true;
+        if (getRounds().get() > 0) {
+            if (needTenSec) {
+                timerTenSec();
+            } else {
+                playSoundStartFinish();
+                timerWork();
+            }
+        }
+    }
+
+    private void timerWork() {
+        if (getRounds().get() > 0) {
+            countingWork();
+        } else {
+            playSoundStartFinish();
+        }
+    }
+
+    private void timerTenSec() {
+        timerDisp.add(Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
+                .take(10)
+                .map(time -> 10 - time)
+                .subscribe(time -> {
+                            if (time < 4) {
+                                playSound();
+                            }
+                            setNewTime(time);
+                        },
+                        onError -> Log.d("timerCounting", onError.getMessage()),
+                        () -> {
+                            playSoundStartFinish();
+                            timerWork();
+                        }));
+    }
+
+    private void countingWork() {
+        firstSecond = true;
+        timerDisp.add(Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
+                .take(workTime)
+                .map(time -> {
+                    if (countDown) {
+                        return workTime - time - 1;
+                    } else {
+                        return time;
+                    }
+                })
+                .subscribe(time -> {
+                            if (firstSecond) {
+                                if (!firstRound) {
+                                    playSound();
+                                    setRounds(getRounds().get() - 1);
+                                }
+                                setWorkTicking(true);
+                                firstSecond = false;
+                            }
+                            setNewTime(time);
+                        },
+                        onError -> Log.d("timerCounting", onError.getMessage()),
+                        () -> {
+                            firstRound = false;
+                            if (restTime == 0 | getRounds().get() == 1) {
+                                setRounds(getRounds().get() - 1);
+                                timerWork();
+                            } else {
+                                countingRest();
+                            }
+                        }));
+    }
+
+    private void countingRest() {
+        firstSecond = true;
+        timerDisp.add(Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
+                .take(restTime)
+                .map(time -> {
+                    if (countDown) {
+                        return restTime - time - 1;
+                    } else {
+                        return time;
+                    }
+                })
+                .subscribe(time -> {
+                            if (firstSecond) {
+                                playSound();
+                                setRestTicking(true);
+                                firstSecond = false;
+                            }
+                            setNewTime(time);
+                        },
+                        onError -> Log.d("timerCounting", onError.getMessage()),
+                        this::timerWork));
+    }
+
+    public void onActivityDestroy() {
+        timerDisp.clear();
+        player.release();
     }
 
     public ObservableBoolean getWorkTicking() {
@@ -73,92 +209,20 @@ public class TimerViewModel extends ViewModel {
         workTicking.set(!restTicking);
     }
 
-//    Setters and Getters
+    //   Default Setters and Getters
     public ObservableInt getRounds() {
         return rounds;
     }
 
-    public void setRounds(int rounds) {
+    private void setRounds(int rounds) {
         this.rounds.set(rounds);
-    }
-
-    public long getWorkTime() {
-        return workTime;
-    }
-
-    public void setWorkTime(long workTime) {
-        this.workTime = workTime;
-    }
-
-    public long getRestTime() {
-        return restTime;
-    }
-
-    public void setRestTime(long restTime) {
-        this.restTime = restTime;
-    }
-
-    public boolean isIntMode() {
-        return intMode;
-    }
-
-    public void setIntMode(boolean intMode) {
-        this.intMode = intMode;
-    }
-
-    public boolean isSwMode() {
-        return swMode;
-    }
-
-    public void setSwMode(boolean swMode) {
-        this.swMode = swMode;
-    }
-
-    public boolean isFgbMode() {
-        return fgbMode;
-    }
-
-    public void setFgbMode(boolean fgbMode) {
-        this.fgbMode = fgbMode;
-    }
-
-    public boolean isTbtMode() {
-        return tbtMode;
-    }
-
-    public void setTbtMode(boolean tbtMode) {
-        this.tbtMode = tbtMode;
-    }
-
-    public boolean isCountDown() {
-        return countDown;
-    }
-
-    public void setCountDown(boolean countDown) {
-        this.countDown = countDown;
-    }
-
-    public boolean isNeedTenSec() {
-        return needTenSec;
-    }
-
-    public void setNeedTenSec(boolean needTenSec) {
-        this.needTenSec = needTenSec;
-    }
-
-    public boolean isNeedSound() {
-        return needSound;
-    }
-
-    public void setNeedSound(boolean needSound) {
-        this.needSound = needSound;
     }
 
     public ObservableLong getTenMin() {
         return tenMin;
     }
 
-    public void setTenMin(long tenMin) {
+    private void setTenMin(long tenMin) {
         this.tenMin.set(tenMin);
     }
 
@@ -166,7 +230,7 @@ public class TimerViewModel extends ViewModel {
         return min;
     }
 
-    public void setMin(long min) {
+    private void setMin(long min) {
         this.min.set(min);
     }
 
@@ -174,7 +238,7 @@ public class TimerViewModel extends ViewModel {
         return tenSec;
     }
 
-    public void setTenSec(long tenSec) {
+    private void setTenSec(long tenSec) {
         this.tenSec.set(tenSec);
     }
 
@@ -182,7 +246,7 @@ public class TimerViewModel extends ViewModel {
         return sec;
     }
 
-    public void setSec(long sec) {
+    private void setSec(long sec) {
         this.sec.set(sec);
     }
 }

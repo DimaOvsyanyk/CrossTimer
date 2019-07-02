@@ -8,7 +8,7 @@ public class MainViewModel extends ViewModel {
 
     private ObservableLong workTime = new ObservableLong();
     private ObservableLong restTime = new ObservableLong();
-    private int rounds;
+    private int rounds = 1;
     private ObservableBoolean intMode = new ObservableBoolean();
     private ObservableBoolean swMode = new ObservableBoolean();
     private ObservableBoolean fgbMode = new ObservableBoolean();

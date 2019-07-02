@@ -61,7 +61,6 @@
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -166,6 +165,7 @@
                     android:background="@drawable/navi_btn"
                     android:contentDescription="@string/delete"
                     android:padding="6dp"
+                    android:onClick="@{() -> mainModel.clearWorkTime()}"
                     android:src="@drawable/ic_delete_forever_white_24dp"
                     android:visibility="@{mainModel.intMode || mainModel.swMode ? View.VISIBLE : View.INVISIBLE}" />
 
@@ -215,6 +215,7 @@
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/navi_btn"
                     android:contentDescription="@string/delete"
+                    android:onClick="@{() -> mainModel.clearRestTime()}"
                     android:padding="6dp"
                     android:src="@drawable/ic_delete_forever_white_24dp"
                     android:visibility="@{mainModel.intMode ? View.VISIBLE : View.INVISIBLE}" />
@@ -262,7 +263,7 @@
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
-                        android:onClick="showInfoDialog"
+                        android:onClick="onInfoDialogClick"
                         app:srcCompat="@drawable/info_icon" />
 
                     <ImageButton
@@ -275,7 +276,7 @@
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
-                        android:onClick="showInfoDialog"
+                        android:onClick="onInfoDialogClick"
                         app:srcCompat="@drawable/info_icon" />
 
                     <ImageButton
@@ -288,7 +289,7 @@
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
-                        android:onClick="showInfoDialog"
+                        android:onClick="onInfoDialogClick"
                         app:srcCompat="@drawable/info_icon" />
 
                     <ImageButton
@@ -301,7 +302,7 @@
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
-                        android:onClick="showInfoDialog"
+                        android:onClick="onInfoDialogClick"
                         app:srcCompat="@drawable/info_icon" />
                 </TableRow>
 
@@ -388,7 +389,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/btn_toggle_bg"
                         android:contentDescription="@string/go"
-                        android:onClick="onGoClick"
+                        android:onClick="onStartTimerClick"
                         android:padding="5dp"
                         app:srcCompat="@drawable/play_icon" />
                 </TableRow>

@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
         binding.btnAddWorkTime.setOnClickListener(__ -> setWorkTime());
         binding.btnAddRestTime.setOnClickListener(__ -> setRestTime());
 
-        binding.btnDeleteWorkTime.setOnClickListener(__ -> mViewModel.clearWorkTime());
-        binding.btnDeleteRestTime.setOnClickListener(__ -> mViewModel.clearRestTime());
-
         binding.toggleInt.setOnCheckedChangeListener((__, isChecked) -> mViewModel.setIntMode(isChecked));
         binding.toggleSw.setOnCheckedChangeListener((__, isChecked) -> swModePicked(isChecked));
         binding.toggleTbt.setOnCheckedChangeListener((__, isChecked) -> tbtModePicked(isChecked));
@@ -97,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         binding.pickerSec.setValue(0);
     }
 
-    public void onGoClick(View view) {
+    public void onStartTimerClick(View view) {
         if (mViewModel.getWorkTime().get() < 1) {
             Toast.makeText(this, "Bad settings", Toast.LENGTH_SHORT).show();
         } else {
@@ -117,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void showInfoDialog(View view) {
+    public void onInfoDialogClick(View view) {
         String infoTitle = "";
         String infoText = "";
         switch (view.getId()) {
