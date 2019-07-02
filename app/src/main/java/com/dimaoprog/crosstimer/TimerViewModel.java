@@ -34,6 +34,7 @@ public class TimerViewModel extends AndroidViewModel {
 
     private ObservableBoolean workTicking = new ObservableBoolean();
     private ObservableBoolean restTicking = new ObservableBoolean();
+    private ObservableBoolean timerWorks = new ObservableBoolean();
 
     private CompositeDisposable timerDisp = new CompositeDisposable();
     private SoundPlayer player;
@@ -72,6 +73,7 @@ public class TimerViewModel extends AndroidViewModel {
         rounds.set(baseRounds);
         workTicking.set(false);
         restTicking.set(false);
+        timerWorks.set(false);
         setNewTime(0L);
     }
 
@@ -93,6 +95,7 @@ public class TimerViewModel extends AndroidViewModel {
     }
 
     public void startTimer() {
+        timerWorks.set(true);
         firstRound = true;
         if (getRounds().get() > 0) {
             if (needTenSec) {
@@ -109,6 +112,7 @@ public class TimerViewModel extends AndroidViewModel {
             countingWork();
         } else {
             playSoundStartFinish();
+            timerWorks.set(false);
         }
     }
 
@@ -248,5 +252,13 @@ public class TimerViewModel extends AndroidViewModel {
 
     private void setSec(long sec) {
         this.sec.set(sec);
+    }
+
+    public ObservableBoolean getTimerWorks() {
+        return timerWorks;
+    }
+
+    public void setTimerWorks(boolean timerWorks) {
+        this.timerWorks.set(timerWorks);
     }
 }
