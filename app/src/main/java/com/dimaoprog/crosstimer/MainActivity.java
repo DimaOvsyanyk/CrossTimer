@@ -1,22 +1,26 @@
 package com.dimaoprog.crosstimer;
 
 import android.app.AlertDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.dimaoprog.crosstimer.databinding.ActivityMainBinding;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 
 import static com.dimaoprog.crosstimer.Constants.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
-    MainViewModel mViewModel;
+    private ActivityMainBinding binding;
+    private MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setMainModel(mViewModel);
         mViewModel.setIntMode(true);
+
+            MobileAds.initialize(this, getResources().getString(R.string.testAppAdId));
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("B1515A74A9515CC704AC807B68B96082")
+                .build();
+        binding.adView.loadAd(adRequest);
 
         binding.btnAddWorkTime.setOnClickListener(__ -> setWorkTime());
         binding.btnAddRestTime.setOnClickListener(__ -> setRestTime());

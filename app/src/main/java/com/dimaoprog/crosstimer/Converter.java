@@ -1,6 +1,6 @@
 package com.dimaoprog.crosstimer;
 
-import android.databinding.InverseMethod;
+import androidx.databinding.InverseMethod;
 
 import java.util.Locale;
 

@@ -164,8 +164,8 @@
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/navi_btn"
                     android:contentDescription="@string/delete"
-                    android:padding="6dp"
                     android:onClick="@{() -> mainModel.clearWorkTime()}"
+                    android:padding="6dp"
                     android:src="@drawable/ic_delete_forever_white_24dp"
                     android:visibility="@{mainModel.intMode || mainModel.swMode ? View.VISIBLE : View.INVISIBLE}" />
 
@@ -394,6 +394,17 @@
                         app:srcCompat="@drawable/play_icon" />
                 </TableRow>
             </TableLayout>
+
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ad_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="@string/testBannerAdId">
+
+            </com.google.android.gms.ads.AdView>
 
         </LinearLayout>
 

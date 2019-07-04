@@ -1,8 +1,9 @@
 package com.dimaoprog.crosstimer;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
 
 import com.dimaoprog.crosstimer.databinding.ActivityTimerBinding;

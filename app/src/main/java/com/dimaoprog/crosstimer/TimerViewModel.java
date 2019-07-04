@@ -1,11 +1,12 @@
 package com.dimaoprog.crosstimer;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableInt;
-import android.databinding.ObservableLong;
-import android.support.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
+import androidx.databinding.ObservableLong;
+import androidx.lifecycle.AndroidViewModel;
+
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import java.util.concurrent.TimeUnit;

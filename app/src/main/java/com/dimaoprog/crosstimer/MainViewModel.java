@@ -1,8 +1,8 @@
 package com.dimaoprog.crosstimer;
 
-import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableLong;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableLong;
+import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
 
