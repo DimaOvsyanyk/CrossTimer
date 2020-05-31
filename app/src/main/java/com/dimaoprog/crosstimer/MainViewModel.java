@@ -1,103 +1,104 @@
 package com.dimaoprog.crosstimer;
 
-import androidx.databinding.ObservableBoolean;
-import androidx.databinding.ObservableLong;
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
+import android.util.Log;
 
-public class MainViewModel extends ViewModel {
+import androidx.annotation.NonNull;
+import androidx.databinding.ObservableInt;
+import androidx.lifecycle.AndroidViewModel;
 
-    private ObservableLong workTime = new ObservableLong();
-    private ObservableLong restTime = new ObservableLong();
-    private int rounds = 1;
-    private ObservableBoolean intMode = new ObservableBoolean();
-    private ObservableBoolean swMode = new ObservableBoolean();
-    private ObservableBoolean fgbMode = new ObservableBoolean();
-    private ObservableBoolean tbtMode = new ObservableBoolean();
+import com.dimaoprog.crosstimer.data.PrefsData;
+import com.dimaoprog.crosstimer.models.Timer;
 
-    public ObservableLong getWorkTime() {
-        return workTime;
-    }
+public class MainViewModel extends AndroidViewModel {
 
-    public void setWorkTime(long workTime) {
-        this.workTime.set(workTime);
-    }
+    private Timer timer;
+    private PrefsData prefsData;
 
-    public ObservableLong getRestTime() {
-        return restTime;
-    }
+    private ObservableInt tenMin = new ObservableInt();
+    private ObservableInt min = new ObservableInt();
+    private ObservableInt tenSec = new ObservableInt();
+    private ObservableInt sec = new ObservableInt();
 
-    public void setRestTime(long restTime) {
-        this.restTime.set(restTime);
-    }
-
-    public ObservableBoolean getIntMode() {
-        return intMode;
-    }
-
-    public void setIntMode(boolean intMode) {
-        this.intMode.set(intMode);
-        if (intMode) {
-            setSwMode(false);
-            setTbtMode(false);
-            setFgbMode(false);
-        }
-    }
-
-    public ObservableBoolean getSwMode() {
-        return swMode;
-    }
-
-    public void setSwMode(boolean swMode) {
-        this.swMode.set(swMode);
-        if (swMode) {
-            setIntMode(false);
-            setFgbMode(false);
-            setTbtMode(false);
-        }
-    }
-
-    public ObservableBoolean getFgbMode() {
-        return fgbMode;
-    }
-
-    public void setFgbMode(boolean fgbMode) {
-        this.fgbMode.set(fgbMode);
-        if (fgbMode) {
-            setIntMode(false);
-            setTbtMode(false);
-            setSwMode(false);
-        }
-    }
-
-    public ObservableBoolean getTbtMode() {
-        return tbtMode;
-    }
-
-    public void setTbtMode(boolean tbtMode) {
-        this.tbtMode.set(tbtMode);
-        if (tbtMode) {
-            setIntMode(false);
-            setFgbMode(false);
-            setSwMode(false);
-        }
+    public MainViewModel(@NonNull Application application) {
+        super(application);
+        prefsData = new PrefsData(application);
+        timer = prefsData.getTimerSettings();
     }
 
     public void clearWorkTime() {
-        setWorkTime(0L);
+        timer.setWork(0L);
     }
 
     public void clearRestTime() {
-        setRestTime(0L);
-    }
-
-
-    public int getRounds() {
-        return rounds;
+        timer.setRest(0L);
     }
 
     public void setRounds(int rounds) {
-        this.rounds = rounds;
+        timer.setRounds(rounds);
     }
 
+    public void setWorkTime() {
+        timer.setWork(getTimeFromPickers());
+        setPickersToZero();
+    }
 
+    public void setRestTime() {
+        timer.setRest(getTimeFromPickers());
+        setPickersToZero();
+    }
+
+    private long getTimeFromPickers() {
+        return tenMin.get() * 10 * 60 +
+                min.get() * 60 +
+                tenSec.get() * 10 +
+                sec.get();
+    }
+
+    private void setPickersToZero() {
+        tenMin.set(0);
+        min.set(0);
+        tenSec.set(0);
+        sec.set(0);
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void goClick() {
+        Log.e("dimon", "goClick: " + timer.toString());
+    }
+
+    public ObservableInt getTenMin() {
+        return tenMin;
+    }
+
+    public void setTenMin(int tenMin) {
+        this.tenMin.set(tenMin);
+    }
+
+    public ObservableInt getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min.set(min);
+    }
+
+    public ObservableInt getTenSec() {
+        return tenSec;
+    }
+
+    public void setTenSec(int tenSec) {
+        this.tenSec.set(tenSec);
+    }
+
+    public ObservableInt getSec() {
+        return sec;
+    }
+
+    public void setSec(int sec) {
+        this.sec.set(sec);
+    }
 }

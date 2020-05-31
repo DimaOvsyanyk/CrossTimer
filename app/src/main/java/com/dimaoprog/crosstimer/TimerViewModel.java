@@ -9,6 +9,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
+import com.dimaoprog.crosstimer.utils.SoundPlayer;
+
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -191,9 +193,11 @@ public class TimerViewModel extends AndroidViewModel {
                         this::timerWork));
     }
 
-    public void onActivityDestroy() {
+    @Override
+    protected void onCleared() {
         timerDisp.clear();
         player.release();
+        super.onCleared();
     }
 
     public ObservableBoolean getWorkTicking() {

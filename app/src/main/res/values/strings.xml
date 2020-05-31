@@ -17,7 +17,6 @@
     <string name="rest">REST</string>
     <string name="finishText">Good job</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="zero">0</string>
     <string name="zero2">00</string>
     <string name="zero3">00:00</string>
@@ -28,6 +27,7 @@
     <string name="fgb">FGB</string>
     <string name="up_dn">up/dn</string>
     <string name="_10s">+10s</string>
+    <string name="_10sCrossed"><strike>+10s</strike></string>
     <string name="sound">sound</string>
     <string name="set">SET</string>
     <string name="mute">mute</string>
@@ -50,12 +50,5 @@
     <string name="howManyInts">How many intervals you wish to do?</string>
     <string name="rounds">rounds</string>
     <string name="delete">delete</string>
-
-    <string name="mainAdId">ca-app-pub-9884613515810141/8716796994</string>
-    <string name="timerAdId">ca-app-pub-9884613515810141/5076934883</string>
-    <string name="adMobAppId">ca-app-pub-9884613515810141~1119354488</string>
-    <string name="testBannerAdId">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="testFullScreenAdId">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="testAppAdId">ca-app-pub-3940256099942544~3347511713</string>
 
 </resources>

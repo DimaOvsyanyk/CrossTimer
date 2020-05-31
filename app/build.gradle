@@ -1,24 +1,55 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.novoda.build-properties'
+
+buildProperties {
+    dev {
+        using project.file('development.properties')
+    }
+    prod {
+        using project.file('production.properties')
+    }
+}
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.dimaoprog.crosstimer"
-        minSdkVersion 24
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            versionNameSuffix "-DEBUG"
+            debuggable true
+            shrinkResources false
+        }
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
+    flavorDimensions "ads"
+    productFlavors {
+        dev {
+            dimension "ads"
+            resValueString "ad_app_id", buildProperties.dev['AdMobAppId']
+            resValueString "main_ad_id", buildProperties.dev['MainAdId']
+            resValueString "timer_ad_id", buildProperties.dev['TimerAdId']
+        }
+        prod {
+            dimension "ads"
+            resValueString "ad_app_id", buildProperties.prod['AdMobAppId']
+            resValueString "main_ad_id", buildProperties.prod['MainAdId']
+            resValueString "timer_ad_id", buildProperties.prod['TimerAdId']
+        }
     }
+
+    dataBinding.enabled = true
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -27,19 +58,19 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0'
     implementation 'com.shawnlin:number-picker:2.4.4'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
 
-    implementation 'com.google.android.gms:play-services-ads:18.0.0'
-    implementation 'com.google.android.gms:play-services-measurement:17.0.0'
-    implementation 'com.google.android.gms:play-services-measurement-sdk:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:18.3.0'
+    implementation 'com.google.android.gms:play-services-measurement:17.2.1'
+    implementation 'com.google.android.gms:play-services-measurement-sdk:17.2.1'
 }

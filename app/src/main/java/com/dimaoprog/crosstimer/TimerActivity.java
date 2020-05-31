@@ -8,16 +8,14 @@ import android.os.Bundle;
 
 import com.dimaoprog.crosstimer.databinding.ActivityTimerBinding;
 
-import static com.dimaoprog.crosstimer.Constants.*;
+import static com.dimaoprog.crosstimer.utils.Constants.*;
 
-public class Timer extends AppCompatActivity {
-
-    private TimerViewModel tViewModel;
+public class TimerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tViewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
+        TimerViewModel tViewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
         ActivityTimerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_timer);
         binding.setTimerModel(tViewModel);
 
@@ -31,11 +29,5 @@ public class Timer extends AppCompatActivity {
                 getIntent().getBooleanExtra(COUNT_DOWN_EXTRA, false),
                 getIntent().getBooleanExtra(TEN_SEC_EXTRA, false),
                 getIntent().getBooleanExtra(SOUND_EXTRA, false));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        tViewModel.onActivityDestroy();
     }
 }

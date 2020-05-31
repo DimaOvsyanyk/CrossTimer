@@ -13,10 +13,9 @@
         <item name="android:textColor">@color/red_neon</item>
         <item name="android:fontFamily">@font/ds_digib</item>
         <item name="android:textAlignment">textEnd</item>
-        <item name="android:numberPickerStyle">@style/NumberPickerTheme</item>
     </style>
 
-    <style name="NumberPickerTheme" parent="@android:style/Widget.Material.NumberPicker">
+    <style name="NumberPickerTheme">
         <item name="android:solidColor">@color/grey_dark</item>
         <item name="android:colorControlNormal">@color/grey_dark</item>
         <item name="android:textColor">@color/red_neon</item>

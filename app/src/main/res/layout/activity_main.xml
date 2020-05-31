@@ -3,7 +3,7 @@
 
     <data>
 
-        <import type="com.dimaoprog.crosstimer.Converter" />
+        <import type="com.dimaoprog.crosstimer.utils.Converter" />
 
         <import type="android.view.View" />
 
@@ -13,21 +13,26 @@
 
     </data>
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey_dark"
-        android:padding="8dp"
+        android:orientation="vertical"
         tools:context=".MainActivity">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_middle"
             android:orientation="vertical">
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -70,9 +75,10 @@
                     android:id="@+id/picker_rounds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:enabled="@{mainModel.intMode}"
+                    android:layout_marginEnd="@dimen/space_xlarge"
+                    android:enabled="@{mainModel.timer.interval}"
                     android:solidColor="@color/grey_dark"
+                    pickerValue="@{mainModel.timer.rounds}"
                     app:np_dividerColor="@color/blue_neon"
                     app:np_max="99"
                     app:np_min="1"
@@ -86,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:solidColor="@color/grey_dark"
+                    pickerValue="@{mainModel.tenMin}"
                     app:np_dividerColor="@color/blue_neon"
                     app:np_max="9"
                     app:np_min="0"
@@ -99,6 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:solidColor="@color/grey_dark"
+                    pickerValue="@{mainModel.min}"
                     app:np_dividerColor="@color/blue_neon"
                     app:np_max="9"
                     app:np_min="0"
@@ -120,6 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:solidColor="@color/grey_dark"
+                    pickerValue="@{mainModel.tenSec}"
                     app:np_dividerColor="@color/blue_neon"
                     app:np_max="5"
                     app:np_min="0"
@@ -133,6 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:solidColor="@color/grey_dark"
+                    pickerValue="@{mainModel.sec}"
                     app:np_dividerColor="@color/blue_neon"
                     app:np_max="9"
                     app:np_min="0"
@@ -151,34 +161,33 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_xlarge"
                     android:layout_weight="1"
                     android:text="@string/work"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
-                    android:id="@+id/btn_delete_work_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_xlarge"
                     android:background="@drawable/navi_btn"
                     android:contentDescription="@string/delete"
                     android:onClick="@{() -> mainModel.clearWorkTime()}"
                     android:padding="6dp"
                     android:src="@drawable/ic_delete_forever_white_24dp"
-                    android:visibility="@{mainModel.intMode || mainModel.swMode ? View.VISIBLE : View.INVISIBLE}" />
+                    android:visibility="@{mainModel.timer.interval || mainModel.timer.sW ? View.VISIBLE : View.INVISIBLE}" />
 
                 <ImageButton
-                    android:id="@+id/btn_add_work_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_xlarge"
                     android:background="@drawable/navi_btn"
                     android:contentDescription="@string/set"
                     android:padding="6dp"
+                    android:onClick="@{() -> mainModel.setWorkTime()}"
                     android:src="@drawable/ic_arrow_forward_white_24dp"
-                    android:visibility="@{mainModel.intMode || mainModel.swMode ? View.VISIBLE : View.INVISIBLE}" />
+                    android:visibility="@{mainModel.timer.interval || mainModel.timer.sW ? View.VISIBLE : View.INVISIBLE}" />
 
                 <TextView
                     style="@style/DisplaySmall"
@@ -186,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/navi_btn"
                     android:padding="6dp"
-                    android:text="@{Converter.longTimeToString(mainModel.workTime)}"
+                    android:text="@{Converter.longTimeToString(mainModel.timer.work)}"
                     tools:text="@string/zero3" />
 
             </LinearLayout>
@@ -197,39 +206,38 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="@{mainModel.swMode ? View.INVISIBLE : View.VISIBLE}">
+                android:visibility="@{mainModel.timer.sW ? View.INVISIBLE : View.VISIBLE}">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_xlarge"
                     android:layout_weight="1"
                     android:text="@string/rest"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
-                    android:id="@+id/btn_delete_rest_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_xlarge"
                     android:background="@drawable/navi_btn"
                     android:contentDescription="@string/delete"
                     android:onClick="@{() -> mainModel.clearRestTime()}"
                     android:padding="6dp"
                     android:src="@drawable/ic_delete_forever_white_24dp"
-                    android:visibility="@{mainModel.intMode ? View.VISIBLE : View.INVISIBLE}" />
+                    android:visibility="@{mainModel.timer.interval ? View.VISIBLE : View.INVISIBLE}" />
 
                 <ImageButton
-                    android:id="@+id/btn_add_rest_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_xlarge"
                     android:background="@drawable/navi_btn"
                     android:contentDescription="@string/set"
                     android:padding="6dp"
+                    android:onClick="@{() -> mainModel.setRestTime()}"
                     android:src="@drawable/ic_arrow_forward_white_24dp"
-                    android:visibility="@{mainModel.intMode ? View.VISIBLE : View.INVISIBLE}" />
+                    android:visibility="@{mainModel.timer.interval ? View.VISIBLE : View.INVISIBLE}" />
 
                 <TextView
                     style="@style/DisplaySmall"
@@ -237,7 +245,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/navi_btn"
                     android:padding="6dp"
-                    android:text="@{Converter.longTimeToString(mainModel.restTime)}"
+                    android:text="@{Converter.longTimeToString(mainModel.timer.rest)}"
                     tools:text="@string/zero3" />
 
             </LinearLayout>
@@ -245,7 +253,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/space_xlarge"
                 android:shrinkColumns="*"
                 android:stretchColumns="*">
 
@@ -258,8 +266,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="@dimen/space_small"
+                        android:layout_marginBottom="@dimen/space_small"
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
@@ -271,8 +279,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="@dimen/space_small"
+                        android:layout_marginBottom="@dimen/space_small"
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
@@ -284,8 +292,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="@dimen/space_small"
+                        android:layout_marginBottom="@dimen/space_small"
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
@@ -297,8 +305,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="@dimen/space_small"
+                        android:layout_marginBottom="@dimen/space_small"
                         android:alpha="0.5"
                         android:background="@drawable/navi_btn_ok"
                         android:contentDescription="@string/info"
@@ -312,41 +320,45 @@
                     android:layout_marginBottom="20dp">
 
                     <ToggleButton
-                        android:id="@+id/toggle_int"
                         style="@style/tglBtnWithText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="@{mainModel.intMode}"
+                        android:checked="@{mainModel.timer.interval}"
+                        android:enabled="@{!mainModel.timer.interval}"
+                        android:onCheckedChanged="@{(view, checked) -> mainModel.timer.setInterval(checked)}"
                         android:text="@string/ints"
                         android:textOff="@string/ints"
                         android:textOn="@string/ints" />
 
                     <ToggleButton
-                        android:id="@+id/toggle_sw"
                         style="@style/tglBtnWithText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="@{mainModel.swMode}"
+                        android:checked="@{mainModel.timer.sW}"
+                        android:enabled="@{!mainModel.timer.sW}"
+                        android:onCheckedChanged="@{(view, checked) -> mainModel.timer.setSW(checked)}"
                         android:text="@string/sw"
                         android:textOff="@string/sw"
                         android:textOn="@string/sw" />
 
                     <ToggleButton
-                        android:id="@+id/toggle_fgb"
                         style="@style/tglBtnWithText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="@{mainModel.fgbMode}"
+                        android:checked="@{mainModel.timer.fGB}"
+                        android:enabled="@{!mainModel.timer.fGB}"
+                        android:onCheckedChanged="@{(view, checked) -> mainModel.timer.setFGB(checked)}"
                         android:text="@string/fgb"
                         android:textOff="@string/fgb"
                         android:textOn="@string/fgb" />
 
                     <ToggleButton
-                        android:id="@+id/toggle_tbt"
                         style="@style/tglBtnWithText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="@{mainModel.tbtMode}"
+                        android:checked="@{mainModel.timer.tabata}"
+                        android:enabled="@{!mainModel.timer.tabata}"
+                        android:onCheckedChanged="@{(view, checked) -> mainModel.timer.setTabata(checked)}"
                         android:text="@string/tbt"
                         android:textOff="@string/tbt"
                         android:textOn="@string/tbt" />
@@ -357,28 +369,31 @@
                     android:layout_height="wrap_content">
 
                     <ToggleButton
-                        android:id="@+id/toggle_up_down"
                         style="@style/tglBtnWithText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:checked="@{mainModel.timer.countdown}"
+                        android:onCheckedChanged="@{(view, checked) -> mainModel.timer.setCountdown(checked)}"
                         android:text="@string/up_dn"
                         android:textOff="@string/up_s"
                         android:textOn="@string/down_s" />
 
                     <ToggleButton
-                        android:id="@+id/toggle_ten_sec"
                         style="@style/tglBtnWithText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:checked="@{mainModel.timer.needTenSecStart}"
+                        android:onCheckedChanged="@{(view, checked) -> mainModel.timer.setNeedTenSecStart(checked)}"
                         android:text="@string/_10s"
                         android:textOff="@string/_10s"
-                        android:textOn="@string/_10s" />
+                        android:textOn="@string/_10sCrossed" />
 
                     <ToggleButton
-                        android:id="@+id/toggle_sound"
                         style="@style/tglBtnWithText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:checked="@{mainModel.timer.needSound}"
+                        android:onCheckedChanged="@{(view, checked) -> mainModel.timer.setNeedSound(checked)}"
                         android:text="@string/sound"
                         android:textOff="@string/sound"
                         android:textOn="@string/mute" />
@@ -389,24 +404,23 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/btn_toggle_bg"
                         android:contentDescription="@string/go"
-                        android:onClick="onStartTimerClick"
-                        android:padding="5dp"
+                        android:onClick="@{() -> mainModel.goClick()}"
+                        android:padding="@dimen/space_small"
                         app:srcCompat="@drawable/play_icon" />
                 </TableRow>
             </TableLayout>
 
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ad_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                ads:adSize="SMART_BANNER"
-                ads:adUnitId="@string/testBannerAdId">
-
-            </com.google.android.gms.ads.AdView>
-
         </LinearLayout>
 
-    </ScrollView>
+        </ScrollView>
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ad_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/main_ad_id" />
+
+    </LinearLayout>
 </layout>

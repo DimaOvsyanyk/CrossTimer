@@ -1,4 +1,4 @@
-package com.dimaoprog.crosstimer;
+package com.dimaoprog.crosstimer.utils;
 
 import androidx.databinding.InverseMethod;
 

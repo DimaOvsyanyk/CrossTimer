@@ -3,6 +3,7 @@ package com.dimaoprog.crosstimer;
 import android.app.AlertDialog;
 import android.content.Intent;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,15 +13,19 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.dimaoprog.crosstimer.databinding.ActivityMainBinding;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-
-import static com.dimaoprog.crosstimer.Constants.*;
+import com.shawnlin.numberpicker.NumberPicker;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private MainViewModel mViewModel;
+    private InterstitialAd interstitialAd;
+    private AdRequest adRequest;
+    public final static int FROM_TIMER = 27;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,100 +33,50 @@ public class MainActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setMainModel(mViewModel);
-        mViewModel.setIntMode(true);
+        MobileAds.initialize(this, getString(R.string.ad_app_id));
+        setupAds();
+        setUpPickersListeners();
+    }
 
-            MobileAds.initialize(this, getResources().getString(R.string.testAppAdId));
+    private void setUpPickersListeners() {
+        binding.pickerRounds.setOnValueChangedListener((picker, oldVal, newVal) -> {mViewModel.setRounds(newVal);});
+        binding.pickerTenMin.setOnValueChangedListener((picker, oldVal, newVal) -> {mViewModel.setTenMin(newVal);});
+        binding.pickerMin.setOnValueChangedListener((picker, oldVal, newVal) -> {mViewModel.setMin(newVal);});
+        binding.pickerTenSec.setOnValueChangedListener((picker, oldVal, newVal) -> {mViewModel.setTenSec(newVal);});
+        binding.pickerSec.setOnValueChangedListener((picker, oldVal, newVal) -> {mViewModel.setSec(newVal);});
+    }
 
-        AdRequest adRequest = new AdRequest.Builder()
+    private void setupAds() {
+        adRequest = new AdRequest.Builder()
                 .addTestDevice("B1515A74A9515CC704AC807B68B96082")
                 .build();
         binding.adView.loadAd(adRequest);
 
-        binding.btnAddWorkTime.setOnClickListener(__ -> setWorkTime());
-        binding.btnAddRestTime.setOnClickListener(__ -> setRestTime());
-
-        binding.toggleInt.setOnCheckedChangeListener((__, isChecked) -> mViewModel.setIntMode(isChecked));
-        binding.toggleSw.setOnCheckedChangeListener((__, isChecked) -> swModePicked(isChecked));
-        binding.toggleTbt.setOnCheckedChangeListener((__, isChecked) -> tbtModePicked(isChecked));
-        binding.toggleFgb.setOnCheckedChangeListener((__, isChecked) -> fgbModePicked(isChecked));
-
-        binding.pickerRounds.setOnValueChangedListener((picker, oldVal, newVal) -> mViewModel.setRounds(newVal));
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.timer_ad_id));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                interstitialAd.show();
+            }
+        });
     }
 
-    private void swModePicked(boolean isPicked) {
-        if (isPicked) {
-            mViewModel.setRounds(1);
-            mViewModel.setRestTime(0L);
-            binding.pickerRounds.setValue(mViewModel.getRounds());
-        }
-        mViewModel.setSwMode(isPicked);
-    }
+//    public void onStartTimerClick(View view) {
+//        if (mViewModel.getWorkTime().get() < 1) {
+//            Toast.makeText(this, "Bad settings", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Intent startTimer = new Intent(MainActivity.this, TimerActivity.class);
 
-    private void tbtModePicked(boolean isPicked) {
-        if (isPicked) {
-            mViewModel.setRounds(8);
-            mViewModel.setWorkTime(20L);
-            mViewModel.setRestTime(10L);
-            binding.pickerRounds.setValue(mViewModel.getRounds());
-        }
-        mViewModel.setTbtMode(isPicked);
-    }
+//            startActivityForResult(startTimer, FROM_TIMER);
+//        }
+//    }
 
-    private void fgbModePicked(boolean isPicked) {
-        if (isPicked) {
-            mViewModel.setRounds(3);
-            mViewModel.setWorkTime(300L);
-            mViewModel.setRestTime(60L);
-            binding.pickerRounds.setValue(mViewModel.getRounds());
-        }
-        mViewModel.setFgbMode(isPicked);
-    }
-
-    private void setWorkTime() {
-        if (getTimeFromPickers() > 0) {
-            mViewModel.setWorkTime(getTimeFromPickers());
-            setPickersToZero();
-        }
-    }
-
-    private void setRestTime() {
-        if (getTimeFromPickers() > 0) {
-            mViewModel.setRestTime(getTimeFromPickers());
-            setPickersToZero();
-        }
-    }
-
-    private long getTimeFromPickers() {
-        return binding.pickerTenMin.getValue() * 10 * 60 +
-                binding.pickerMin.getValue() * 60 +
-                binding.pickerTenSec.getValue() * 10 +
-                binding.pickerSec.getValue();
-    }
-
-    private void setPickersToZero() {
-        binding.pickerTenMin.setValue(0);
-        binding.pickerMin.setValue(0);
-        binding.pickerTenSec.setValue(0);
-        binding.pickerSec.setValue(0);
-    }
-
-    public void onStartTimerClick(View view) {
-        if (mViewModel.getWorkTime().get() < 1) {
-            Toast.makeText(this, "Bad settings", Toast.LENGTH_SHORT).show();
-        } else {
-            Intent startTimer = new Intent(MainActivity.this, Timer.class);
-            startTimer.putExtra(INT_MODE_EXTRA, mViewModel.getIntMode().get());
-            startTimer.putExtra(SW_MODE_EXTRA, mViewModel.getSwMode().get());
-            startTimer.putExtra(FGB_MODE_EXTRA, mViewModel.getFgbMode().get());
-            startTimer.putExtra(TBT_MODE_EXTRA, mViewModel.getTbtMode().get());
-            startTimer.putExtra(COUNT_DOWN_EXTRA, binding.toggleUpDown.isChecked());
-            startTimer.putExtra(TEN_SEC_EXTRA, !binding.toggleTenSec.isChecked());
-            startTimer.putExtra(SOUND_EXTRA, !binding.toggleSound.isChecked());
-            startTimer.putExtra(ROUNDS_EXTRA, mViewModel.getRounds());
-            startTimer.putExtra(WORK_TIME_EXTRA, mViewModel.getWorkTime().get());
-            startTimer.putExtra(REST_TIME_EXTRA, mViewModel.getRestTime().get());
-
-            startActivity(startTimer);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FROM_TIMER) {
+            interstitialAd.loadAd(adRequest);
         }
     }
 
@@ -146,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
                 infoText = getString(R.string.infoTBT);
                 break;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(infoTitle)
                 .setMessage(infoText)
                 .setCancelable(false)
-                .setNegativeButton("OK", (dialog, which) -> dialog.cancel());
+                .setNegativeButton(getText(R.string.ok), (dialog, which) -> dialog.cancel());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }

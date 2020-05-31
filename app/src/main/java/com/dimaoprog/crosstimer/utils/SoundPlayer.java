@@ -1,9 +1,10 @@
-package com.dimaoprog.crosstimer;
+package com.dimaoprog.crosstimer.utils;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 
 import java.io.IOException;
